@@ -33,11 +33,11 @@ public class GameUI {
     }
 
     public void setWidgets() {
-        if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget = new RotationWidget();
+        if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget = new RotationWidget(null);
     }
 
     public void configureWidgets() {
-        if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget.addToStage(stage);
+        if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget.addToStage(stage,15,15);
     }
 
     public void update(float delta) {

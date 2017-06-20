@@ -6,10 +6,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.flower.screens.BaseScreen;
+import com.game.flower.screens.ArregloScreen;
 import com.game.flower.screens.MainMenuScreen;
-import com.game.flower.screens.MakeOrderScreen;
-import com.game.flower.screens.NavigationDrawerScreenExample;
-import com.game.flower.screens.Scrollpanel;
+import com.game.flower.screens.MakerOrderScreen;
+import com.game.flower.screens.MakerOrderScreen;
 import com.game.flower.screens.SplashScreen;
 
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public class Core extends ApplicationAdapter {
 	public void create() {
 		screenSprite=new SpriteBatch();
 		screens.put(BaseScreen.SPLASH_SCREEN, new SplashScreen(this,BaseScreen.SPLASH_SCREEN));
-		screens.put(BaseScreen.MAIN_MENU_SCREEN, new NavigationDrawerScreenExample(this,BaseScreen.MAIN_MENU_SCREEN));
-		screens.put(BaseScreen.MAKE_A_ORDER_SCREEN, new MakeOrderScreen(this,BaseScreen.MAKE_A_ORDER_SCREEN));
+		screens.put(BaseScreen.MAIN_MENU_SCREEN, new MainMenuScreen(this,BaseScreen.MAIN_MENU_SCREEN));
+		screens.put(BaseScreen.MAKE_A_ORDER_SCREEN, new MakerOrderScreen(this,BaseScreen.MAKE_A_ORDER_SCREEN));
 		setScreen(BaseScreen.SPLASH_SCREEN);
 	}
 

@@ -2,15 +2,13 @@ package com.game.flower.managers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.game.flower.Actor.MProducto;
-import com.game.flower.screens.NavigationDrawerScreenExample;
+import com.game.flower.screens.MakerOrderScreen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by luifer on 19-06-17.
@@ -18,7 +16,7 @@ import java.util.Random;
 
 public class ProductoFactory {
 
-    public static List<MProducto> dummyProductoGenerator(NavigationDrawerScreenExample nav)
+    public static List<MProducto> dummyProductoGenerator(MakerOrderScreen nav)
     {
         List<MProducto> productos=new ArrayList<>();
         int n=1;
@@ -29,7 +27,7 @@ public class ProductoFactory {
             Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
             MProducto mProducto=new MProducto(drawableIcon);
             mProducto.setId(n);
-            mProducto.addListener(new ProductGesture(nav,n,n));
+            mProducto.addListener(new ProductGesture(false,nav,n,n));
             productos.add(mProducto);
             n++;
             if(i==3)

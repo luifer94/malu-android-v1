@@ -32,14 +32,14 @@ import com.badlogic.gdx.utils.Array;
  * Created by LuiferPc on 5/4/2017.
  */
 
-public class MakeOrderScreen extends BaseScreen {
+public class ArregloScreen extends BaseScreen {
     GameWorld gameWorld;
    // GameUI gameUI;
     private static final float FOV = 67F;
     private PerspectiveCamera perspectiveCamera;
     protected CameraInputController camController;
 
-    public MakeOrderScreen(Core game,int id) {
+    public ArregloScreen(Core game, int id) {
         super(game, id);
         initPersCamera();
 

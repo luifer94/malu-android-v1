@@ -5,5 +5,6 @@ package com.game.flower.managers;
  */
 
 public interface Listener {
-    public void onTap(int id,int recurso);
+    public void onTap(boolean esDeSeleccion,int id,int recurso);
+    public void onTouchDown(boolean esDeSeleccion,int id,int recurso,float x,float y);
 }

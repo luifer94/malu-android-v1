@@ -21,57 +21,51 @@ import com.game.flower.Actor.MProducto;
 import com.game.flower.Actor.SideMenu;
 import com.game.flower.Core;
 import com.game.flower.UI.NavigationDrawer;
+import com.game.flower.UI.controllerWidgets.RotationWidget;
 import com.game.flower.managers.Listener;
+import com.game.flower.managers.ProductGesture;
 import com.game.flower.managers.ProductoFactory;
 import com.game.flower.managers.ResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.badlogic.gdx.Gdx.input;
+
 /**
  * Created by LuiferPc on 13/5/2017.
  */
 
-public class NavigationDrawerScreenExample extends BaseScreen implements Listener{
+public class MakerOrderScreen extends BaseScreen implements Listener, EventListener {
     Table contenedorPSeleccionados;
     ScrollPane scrollpane;
     List<MProducto> vasijas;
     List<MProducto> flores;
     List<MProducto> productosSeleccionados;
     Listener listener;
+    MProducto seleccionado;
+    Stage stageSeleccionado;
+    RotationWidget circuloVicioso;
 
-    Table containerr;
-    public NavigationDrawerScreenExample(Core game, int id) {
+    public MakerOrderScreen(Core game, int id)
+    {
         super(game, id);
+        seleccionado=null;
     }
 
     @Override
     public void show() {
         stage = new Stage(new StretchViewport(1080, 1920));
+        stageSeleccionado = new Stage(new StretchViewport(1080, 1920));
+        circuloVicioso=new RotationWidget(this);
+        circuloVicioso.addToStage(stage,-720,500);
+
+
         inicializarProductos();
         inicializarContenedor();
-
-      /*  icon.addListener(new ClickListener() {
-            private int clicked = 0;
-            public void clicked(InputEvent event, float x, float y) {
-                if (clicked % 2 == 0) {
-                    clicked++;
-                    Drawable drawableIconx = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("flowers/1/1.png")));
-                    ImageButton iconx = new ImageButton(drawableIconx);
-                    iconx.setSize(360,200);
-                    containerr.add(iconx).row();
-                    NavigationDrawer.show(true);
-
-                } else {
-                    clicked++;
-                    NavigationDrawer.show(false);
-                }
-            }
-        });*/
-
         initNavigationDrawer();
 
-        Gdx.input.setInputProcessor(stage);
+        input.setInputProcessor(stage);
 
     }
 
@@ -158,7 +152,21 @@ public class NavigationDrawerScreenExample extends BaseScreen implements Listene
     @Override
     public void render(float delta) {
         stage.act(delta);
+        circuloVicioso.controlarAccion();
         stage.draw();
+
+        if(input.isTouched() && seleccionado!=null)
+        {
+            int x = (int) (input.getX()-seleccionado.getWidth()/2);
+            int y = Gdx.graphics.getHeight() - input.getY();
+            seleccionado.setPosition(x,y);
+            stageSeleccionado.act();
+            stageSeleccionado.draw();
+        }else if(!input.isTouched() && seleccionado!=null) {
+            seleccionado=null;
+            stageSeleccionado.clear();
+        }
+
     }
 
     @Override
@@ -187,21 +195,41 @@ public class NavigationDrawerScreenExample extends BaseScreen implements Listene
     }
 
     @Override
-    public void onTap(int id,int recurso) {
+    public void onTap(boolean esDeSeleccion,int id,int recurso) {
         //todo mejorar la manera de buscar
-       for (int i=0;i<flores.size();i++)
-       {
-
-           if(flores.get(i).getId()==id && !estaEnlaLista(id))
+        if(!esDeSeleccion){
+           for (int i=0;i<flores.size();i++)
            {
-               String flower="flowers/"+recurso+"/"+recurso+".png";
-               Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
-               MProducto mProducto=new MProducto(drawableIcon);
-               mProducto.setId(id);
-               productosSeleccionados.add(mProducto);
-               contenedorPSeleccionados.add(mProducto).row();
+
+               if(flores.get(i).getId()==id && !estaEnlaLista(id))
+               {
+                   String flower="flowers/"+recurso+"/"+recurso+".png";
+                   Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
+                   MProducto mProducto=new MProducto(drawableIcon);
+                   mProducto.setId(id);
+                   mProducto.addListener(new ProductGesture(true,this,id,recurso));
+                   productosSeleccionados.add(mProducto);
+                   contenedorPSeleccionados.add(mProducto).row();
+               }
            }
-       }
+        }else {
+
+        }
+    }
+
+    @Override
+    public void onTouchDown(boolean esDeSeleccion, int id, int recurso,float x,float y) {
+        if(esDeSeleccion && seleccionado==null)
+        {
+            String flower="flowers/"+recurso+"/"+recurso+".png";
+            Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
+            seleccionado=new MProducto(drawableIcon);
+            seleccionado.setPosition(x,y);
+            seleccionado.setScaleX(1.9f);
+            seleccionado.setScaleY(1.9f);
+            seleccionado.setId(id);
+            stageSeleccionado.addActor(seleccionado);
+        }
     }
 
     private boolean estaEnlaLista(int id) {
@@ -215,4 +243,14 @@ public class NavigationDrawerScreenExample extends BaseScreen implements Listene
         return false;
     }
 
+    @Override
+    public boolean handle(Event event) {
+        if(this.seleccionado!=null)
+        {
+            game.setScreen(BaseScreen.MAIN_MENU_SCREEN);
+            game.currentScreen.show();
+            return true;
+        }
+        return false;
+    }
 }
