@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.flower.screens.BaseScreen;
 import com.game.flower.screens.MainMenuScreen;
 import com.game.flower.screens.MakeOrderScreen;
+import com.game.flower.screens.NavigationDrawerScreenExample;
+import com.game.flower.screens.Scrollpanel;
 import com.game.flower.screens.SplashScreen;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Core extends ApplicationAdapter {
-	public static final float VIRTUAL_WIDTH = 960;
-	public static final float VIRTUAL_HEIGHT = 540;
 	private final Map<Integer, Screen> screens = new HashMap<>();
 	public Screen currentScreen;
 	private SpriteBatch screenSprite;
@@ -37,7 +37,7 @@ public class Core extends ApplicationAdapter {
 	public void create() {
 		screenSprite=new SpriteBatch();
 		screens.put(BaseScreen.SPLASH_SCREEN, new SplashScreen(this,BaseScreen.SPLASH_SCREEN));
-		screens.put(BaseScreen.MAIN_MENU_SCREEN, new MainMenuScreen(this,BaseScreen.MAIN_MENU_SCREEN));
+		screens.put(BaseScreen.MAIN_MENU_SCREEN, new NavigationDrawerScreenExample(this,BaseScreen.MAIN_MENU_SCREEN));
 		screens.put(BaseScreen.MAKE_A_ORDER_SCREEN, new MakeOrderScreen(this,BaseScreen.MAKE_A_ORDER_SCREEN));
 		setScreen(BaseScreen.SPLASH_SCREEN);
 	}

@@ -49,9 +49,12 @@ public class NavigationDrawer {
     }
 
     private static void setNavigationDrawerDefault(Stage stage) {
+        float xx=camera.position.x;
         WIDTH = stage.getWidth() - stage.getWidth() / 3;
         CAM_MAIN_POSITION = stage.getWidth() / 2;
         SPEED = 2f;
+        int xd=0;
+        xd++;
     }
 
     private static Task initializeTimerTask(final boolean show) {

@@ -81,7 +81,9 @@ public class EntityFactory {
 
     private static Entity createCharacter(float x, float y, float z) {
         Entity entity = new Entity();
-        Model flower= ResourceManager.Instance().get("flowers/funcionan/5/file.obj",Model.class);
+        //3/ItmRipStickFlower.obj
+        //
+        Model flower= ResourceManager.Instance().get("flowers/3/ItmRipStickFlower.obj",Model.class);
         ModelComponent m=new ModelComponent(flower,x,y,z);
         entity.add(m);
         return entity;

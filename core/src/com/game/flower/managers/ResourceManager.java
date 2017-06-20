@@ -29,7 +29,12 @@ public class ResourceManager extends AssetManager{
         _instance.load("screens/mainmenu/butterflyanimation.png", Texture.class);
         _instance.load("screens/mainmenu/floreriaMalu.png",Texture.class);
         _instance.load("screens/mainmenu/orderbutton.jpg",Texture.class);
-        _instance.load("flowers/funcionan/5/file.obj", Model.class);
+        _instance.load("screens/makeaorder/side_menu.png",Texture.class);
+        _instance.load("flowers/1/1.png",Texture.class);
+        _instance.load("flowers/2/2.png",Texture.class);
+        _instance.load("flowers/3/3.png",Texture.class);
+        _instance.load("1.jpg",Texture.class);
+        _instance.load("flowers/3/ItmRipStickFlower.obj", Model.class);
 
 
 

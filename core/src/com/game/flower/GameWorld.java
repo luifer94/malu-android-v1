@@ -42,6 +42,8 @@ public class GameWorld {
 
     public GameWorld(PerspectiveCamera perspectiveCamera) {
         Bullet.init();
+        int w= Gdx.graphics.getWidth();
+        int h= Gdx.graphics.getHeight();
         this.perspectiveCamera=perspectiveCamera;
         initEnvironment();
         initModelBatch();
