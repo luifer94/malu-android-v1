@@ -15,10 +15,11 @@ public class BaseScreen implements Screen {
     public static final int SPLASH_SCREEN=0;
     public static final int MAIN_MENU_SCREEN=1;
     public static final int MAKE_A_ORDER_SCREEN=2;
+    public static final int FLOWER_ARRANGEMENT_SCREEN=3;
 
     public Core game;
     private int id;
-    Stage stage;
+    public Stage stage;
     public int getId() {
         return id;
     }

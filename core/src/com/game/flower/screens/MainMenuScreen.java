@@ -46,7 +46,6 @@ public class MainMenuScreen extends BaseScreen {
         playButton.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(BaseScreen.MAKE_A_ORDER_SCREEN);
-                //((ArregloScreen)game.currentScreen).initAll();
                 game.currentScreen.show();
                 return true;
             }

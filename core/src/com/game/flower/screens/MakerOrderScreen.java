@@ -19,10 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.flower.Actor.MProducto;
 import com.game.flower.Actor.SideMenu;
+import com.game.flower.ArrangementWorld;
 import com.game.flower.Core;
 import com.game.flower.UI.NavigationDrawer;
 import com.game.flower.UI.controllerWidgets.RotationWidget;
 import com.game.flower.managers.Listener;
+import com.game.flower.managers.MProduct;
 import com.game.flower.managers.ProductGesture;
 import com.game.flower.managers.ProductoFactory;
 import com.game.flower.managers.ResourceManager;
@@ -38,7 +40,6 @@ import static com.badlogic.gdx.Gdx.input;
 
 public class MakerOrderScreen extends BaseScreen implements Listener, EventListener {
     Table contenedorPSeleccionados;
-    ScrollPane scrollpane;
     List<MProducto> vasijas;
     List<MProducto> flores;
     List<MProducto> productosSeleccionados;
@@ -55,16 +56,22 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
 
     @Override
     public void show() {
-        stage = new Stage(new StretchViewport(1080, 1920));
-        stageSeleccionado = new Stage(new StretchViewport(1080, 1920));
-        circuloVicioso=new RotationWidget(this);
-        circuloVicioso.addToStage(stage,-720,500);
+        if(circuloVicioso==null) {
+            stage = new Stage(new StretchViewport(1080, 1920));
+            Drawable drawable = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/makeaorder/background.jpg")));
+            Image fondo=new Image(drawable);
+            fondo.setPosition(-1080,0);
+            fondo.setSize(1080*2,1920);
+            stage.addActor(fondo);
+            stageSeleccionado = new Stage(new StretchViewport(1080, 1920));
+            circuloVicioso = new RotationWidget(this);
+            circuloVicioso.addToStage(stage, -720, 500);
 
 
-        inicializarProductos();
-        inicializarContenedor();
-        initNavigationDrawer();
-
+            inicializarProductos();
+            inicializarContenedor();
+            initNavigationDrawer();
+        }
         input.setInputProcessor(stage);
 
     }
@@ -75,11 +82,11 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
         Table vasijasTablas = new Table();
         for (int i=0;i<this.flores.size();i++)
         {
-            floresTablas.add(this.flores.get(i)).row();
+            floresTablas.add(this.flores.get(i)).space(20).row();
         }
         for(int i=0;i<this.vasijas.size();i++)
         {
-            vasijasTablas.add(this.vasijas.get(i)).row();
+            vasijasTablas.add(this.vasijas.get(i)).space(20).row();
         }
 
         ScrollPane scrollflores=new ScrollPane(floresTablas);
@@ -102,16 +109,20 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
             }
         });
 
-        contenedorPSeleccionados.add(sideMenu).row();
+        contenedorPSeleccionados.add(sideMenu).spaceBottom(25).row();
         ScrollPane scrollSeleccionados=new ScrollPane(contenedorPSeleccionados);
         scrollSeleccionados.setSize(360,1920);
 
         Table contenedorTotal = new Table();
+        contenedorTotal.setFillParent(true);
+        contenedorTotal.top();
         contenedorTotal.setWidth(1080);
         contenedorTotal.setHeight(1920);
         contenedorTotal.add(scrollSeleccionados).left().top();
         contenedorTotal.add(scrollflores).center().top();
         contenedorTotal.add(scrollvasijas).right().top();
+        contenedorTotal.setFillParent(true);
+
 
 
 
@@ -121,8 +132,18 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
     }
 
     private void inicializarProductos() {
-        flores= ProductoFactory.dummyProductoGenerator(this);
-        vasijas= ProductoFactory.dummyProductoGenerator(this);
+        List<MProducto> productos=ProductoFactory.Instance().productosGenerator(this);
+        flores=new ArrayList<>();
+        vasijas=new ArrayList<>();
+        for(MProducto p:productos)
+        {
+            if(p.isEsFlor())
+            {
+                flores.add(p);
+            }else {
+                vasijas.add(p);
+            }
+        }
         productosSeleccionados=new ArrayList<>();
     }
 
@@ -207,13 +228,32 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
                    Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
                    MProducto mProducto=new MProducto(drawableIcon);
                    mProducto.setId(id);
+                   mProducto.setName(flores.get(i).getName());
+                   mProducto.setPrice(flores.get(i).getPrice());
+                   mProducto.setRecurso(recurso);
                    mProducto.addListener(new ProductGesture(true,this,id,recurso));
                    productosSeleccionados.add(mProducto);
                    contenedorPSeleccionados.add(mProducto).row();
                }
            }
-        }else {
+            for (int i=0;i<vasijas.size();i++)
+            {
 
+                if(vasijas.get(i).getId()==id && !estaEnlaLista(id))
+                {
+                    String flower="pot/"+recurso+"/"+recurso+".png";
+                    Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
+                    MProducto mProducto=new MProducto(drawableIcon);
+                    mProducto.setId(id);
+                    mProducto.setName(flores.get(i).getName());
+                    mProducto.setPrice(flores.get(i).getPrice());
+                    mProducto.setEsFlor(false);
+                    mProducto.setRecurso(recurso);
+                    mProducto.addListener(new ProductGesture(true,this,id,recurso));
+                    productosSeleccionados.add(mProducto);
+                    contenedorPSeleccionados.add(mProducto).row();
+                }
+            }
         }
     }
 
@@ -221,15 +261,37 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
     public void onTouchDown(boolean esDeSeleccion, int id, int recurso,float x,float y) {
         if(esDeSeleccion && seleccionado==null)
         {
-            String flower="flowers/"+recurso+"/"+recurso+".png";
+            MProducto mProduct=getProduct(id);
+            String flower=mProduct.isEsFlorToStr();
+            flower+="/"+recurso+"/"+recurso+".png";
             Drawable drawableIcon = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get(flower)));
             seleccionado=new MProducto(drawableIcon);
+            seleccionado.setEsFlor(mProduct.isEsFlor());
+            seleccionado.setName(mProduct.getName());
+            seleccionado.setPrice(mProduct.getPrice());
+            seleccionado.setRecurso(recurso);
             seleccionado.setPosition(x,y);
             seleccionado.setScaleX(1.9f);
             seleccionado.setScaleY(1.9f);
             seleccionado.setId(id);
             stageSeleccionado.addActor(seleccionado);
         }
+    }
+
+    private MProducto getProduct(int id) {
+        for(MProducto flor:flores)
+        {
+            if(flor.getId()==id){
+                return flor;
+            }
+        }
+        for(MProducto vasija:vasijas)
+        {
+            if(vasija.getId()==id){
+                return vasija;
+            }
+        }
+        return null;
     }
 
     private boolean estaEnlaLista(int id) {
@@ -247,7 +309,12 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
     public boolean handle(Event event) {
         if(this.seleccionado!=null)
         {
-            game.setScreen(BaseScreen.MAIN_MENU_SCREEN);
+            game.setScreen(BaseScreen.FLOWER_ARRANGEMENT_SCREEN);
+            ArrangementWorld arrangementWorld=((FlowerArrangementScreen)game.currentScreen).arrangementWorld;
+            if(arrangementWorld==null) {
+                ((FlowerArrangementScreen) game.currentScreen).initAll();
+            }
+            ((FlowerArrangementScreen) game.currentScreen).setProduct(seleccionado);
             game.currentScreen.show();
             return true;
         }

@@ -18,11 +18,30 @@ public class MProducto extends ImageButton {
     private float price;
     private String name;
     Drawable drawableIcon;
+    private boolean esFlor;
+    private int recurso;
 
     public MProducto(Drawable imageUp) {
         super(imageUp);
         drawableIcon=imageUp;
         setSize(360,200);
+        esFlor=true;
+    }
+
+    public int getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(int recurso) {
+        this.recurso = recurso;
+    }
+
+    public boolean isEsFlor() {
+        return esFlor;
+    }
+
+    public void setEsFlor(boolean esFlor) {
+        this.esFlor = esFlor;
     }
 
     public int getId() {
@@ -65,5 +84,9 @@ public class MProducto extends ImageButton {
 
     public void setDrawableIcon(Drawable drawableIcon) {
         this.drawableIcon = drawableIcon;
+    }
+
+    public String isEsFlorToStr() {
+        return isEsFlor() ? "flowers":"pot";
     }
 }

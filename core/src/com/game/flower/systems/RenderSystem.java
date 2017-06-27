@@ -29,6 +29,11 @@ public class RenderSystem extends EntitySystem {
         entities = e.getEntitiesFor(Family.all(ModelComponent.class).get());
     }
 
+    @Override
+    public void removedFromEngine(Engine e) {
+        entities = e.getEntitiesFor(Family.all(ModelComponent.class).get());
+    }
+
     public void update(float delta) {
         for (int i = 0; i < entities.size(); i++) {
             ModelComponent mod = entities.get(i).getComponent(ModelComponent.class);

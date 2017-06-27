@@ -6,9 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.flower.screens.BaseScreen;
-import com.game.flower.screens.ArregloScreen;
+import com.game.flower.screens.FlowerArrangementScreen;
 import com.game.flower.screens.MainMenuScreen;
-import com.game.flower.screens.MakerOrderScreen;
 import com.game.flower.screens.MakerOrderScreen;
 import com.game.flower.screens.SplashScreen;
 
@@ -39,6 +38,7 @@ public class Core extends ApplicationAdapter {
 		screens.put(BaseScreen.SPLASH_SCREEN, new SplashScreen(this,BaseScreen.SPLASH_SCREEN));
 		screens.put(BaseScreen.MAIN_MENU_SCREEN, new MainMenuScreen(this,BaseScreen.MAIN_MENU_SCREEN));
 		screens.put(BaseScreen.MAKE_A_ORDER_SCREEN, new MakerOrderScreen(this,BaseScreen.MAKE_A_ORDER_SCREEN));
+		screens.put(BaseScreen.FLOWER_ARRANGEMENT_SCREEN, new FlowerArrangementScreen(this,BaseScreen.FLOWER_ARRANGEMENT_SCREEN));
 		setScreen(BaseScreen.SPLASH_SCREEN);
 	}
 
