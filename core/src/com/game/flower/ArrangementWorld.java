@@ -102,8 +102,10 @@ public class ArrangementWorld {
         modelBatch = null;
     }
 
-    public void remove(Entity entity) {
-        engine.removeEntity(entity);
-        //bulletSystem.removeBody(entity);
+    public void removeFlowerAndVase() {
+        masetaActual=null;
+        engine.removeAllEntities();
+        engine.addEntity(groundEntity);
+        flowerInputSystem.resetear();
     }
 }

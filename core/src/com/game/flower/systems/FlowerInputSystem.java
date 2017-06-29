@@ -180,4 +180,9 @@ public class FlowerInputSystem extends EntitySystem implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public void resetear() {
+        producto=null;
+        isDeleting=false;
+    }
 }

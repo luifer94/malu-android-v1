@@ -74,4 +74,9 @@ public class Core extends ApplicationAdapter {
 	public void dispose() {
 		currentScreen.dispose();
 	}
+
+	public void resetearMakeArrangement() {
+		screens.put(BaseScreen.MAKE_A_ORDER_SCREEN, new MakerOrderScreen(this,BaseScreen.MAKE_A_ORDER_SCREEN));
+		screens.put(BaseScreen.FLOWER_ARRANGEMENT_SCREEN, new FlowerArrangementScreen(this,BaseScreen.FLOWER_ARRANGEMENT_SCREEN));
+	}
 }

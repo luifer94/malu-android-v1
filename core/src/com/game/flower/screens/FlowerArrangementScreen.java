@@ -118,4 +118,8 @@ public class FlowerArrangementScreen extends BaseScreen {
     public MProducto getProduct() {
         return product;
     }
+
+    public void resetear() {
+        arrangementWorld.removeFlowerAndVase();
+    }
 }

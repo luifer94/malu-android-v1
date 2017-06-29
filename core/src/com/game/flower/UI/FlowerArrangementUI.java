@@ -48,7 +48,7 @@ public class FlowerArrangementUI {
     public void setWidgets()
     {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/flowerarrangementscreen/menu.png")));
-        Drawable drawable1 = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/flowerarrangementscreen/deleteButton.jpg")));
+        Drawable drawable1 = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/flowerarrangementscreen/deleteButton.png")));
         menubutton=new ImageButton(drawable);
         deleteButton=new ImageButton(drawable1);
         Skin skin = new Skin();

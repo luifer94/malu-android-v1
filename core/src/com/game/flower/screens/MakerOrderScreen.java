@@ -17,12 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.game.flower.Actor.FlowerActor;
 import com.game.flower.Actor.MProducto;
 import com.game.flower.Actor.SideMenu;
 import com.game.flower.ArrangementWorld;
 import com.game.flower.Core;
 import com.game.flower.UI.NavigationDrawer;
-import com.game.flower.UI.controllerWidgets.RotationWidget;
 import com.game.flower.managers.Listener;
 import com.game.flower.managers.MProduct;
 import com.game.flower.managers.ProductGesture;
@@ -46,7 +46,8 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
     Listener listener;
     MProducto seleccionado;
     Stage stageSeleccionado;
-    RotationWidget circuloVicioso;
+    FlowerActor florAnimacion;
+    SideMenu sideMenu;
 
     public MakerOrderScreen(Core game, int id)
     {
@@ -56,7 +57,7 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
 
     @Override
     public void show() {
-        if(circuloVicioso==null) {
+        if(florAnimacion==null) {
             stage = new Stage(new StretchViewport(1080, 1920));
             Drawable drawable = new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/makeaorder/background.jpg")));
             Image fondo=new Image(drawable);
@@ -64,8 +65,8 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
             fondo.setSize(1080*2,1920);
             stage.addActor(fondo);
             stageSeleccionado = new Stage(new StretchViewport(1080, 1920));
-            circuloVicioso = new RotationWidget(this);
-            circuloVicioso.addToStage(stage, -720, 500);
+            initFlorAnimacion();
+
 
 
             inicializarProductos();
@@ -74,6 +75,12 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
         }
         input.setInputProcessor(stage);
 
+    }
+
+    private void initFlorAnimacion() {
+        florAnimacion = new FlowerActor();
+        florAnimacion.addListener(this);
+        stage.addActor(florAnimacion);
     }
 
     private void inicializarContenedor() {
@@ -94,7 +101,7 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
         ScrollPane scrollvasijas=new ScrollPane(vasijasTablas);
         scrollvasijas.setSize(360,1920);
 
-        SideMenu sideMenu=new SideMenu(new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/makeaorder/side_menu.png"))));
+        sideMenu=new SideMenu(new TextureRegionDrawable(new TextureRegion((Texture) ResourceManager.Instance().get("screens/makeaorder/side_menu.png"))));
         sideMenu.addListener(new ClickListener(){
             private int clicked = 0;
             public void clicked(InputEvent event, float x, float y) {
@@ -173,7 +180,6 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
     @Override
     public void render(float delta) {
         stage.act(delta);
-        circuloVicioso.controlarAccion();
         stage.draw();
 
         if(input.isTouched() && seleccionado!=null)
@@ -189,6 +195,7 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
         }
 
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -319,5 +326,11 @@ public class MakerOrderScreen extends BaseScreen implements Listener, EventListe
             return true;
         }
         return false;
+    }
+
+    public void resetear() {
+        contenedorPSeleccionados.clear();
+        contenedorPSeleccionados.add(sideMenu).spaceBottom(25).row();
+        productosSeleccionados.clear();
     }
 }

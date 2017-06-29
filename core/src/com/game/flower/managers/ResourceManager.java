@@ -36,13 +36,14 @@ public class ResourceManager extends AssetManager{
         _instance.load("screens/mainmenu/orderbutton.jpg",Texture.class);
         _instance.load("screens/makeaorder/side_menu.png",Texture.class);
         _instance.load("screens/makeaorder/background.jpg",Texture.class);
+        _instance.load("screens/makeaorder/flower.png",Texture.class);
 
         _instance.load("screens/flowerarrangementscreen/menu.png",Texture.class);
         _instance.load("screens/flowerarrangementscreen/add.png",Texture.class);
         _instance.load("screens/flowerarrangementscreen/close.png",Texture.class);
         _instance.load("screens/flowerarrangementscreen/exit.png",Texture.class);
         _instance.load("screens/flowerarrangementscreen/order.png",Texture.class);
-        _instance.load("screens/flowerarrangementscreen/deleteButton.jpg",Texture.class);
+        _instance.load("screens/flowerarrangementscreen/deleteButton.png",Texture.class);
         _instance.load("screens/flowerarrangementscreen/background.jpg",Texture.class);
 
         _instance.load("select/touchBackground.png",Texture.class);

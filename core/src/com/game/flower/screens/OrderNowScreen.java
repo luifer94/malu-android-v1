@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.flower.Actor.MProducto;
@@ -146,20 +147,26 @@ public class OrderNowScreen extends BaseScreen implements EventListener {
 
         Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.POST);
         httpGet.setUrl(Contants.GET_PRODUCT);
+        json.setOutputType(JsonWriter.OutputType.json);
         String parametersString=json.toJson(parameters).toString();
         httpGet.setContent(parametersString);
         Gdx.net.sendHttpRequest (httpGet, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 int code=httpResponse.getStatus().getStatusCode();
+                pulsado=false;
                 try{
-                    if(code==200){
-                        String respond=httpResponse.getResultAsString();
+                    String respond=httpResponse.getResultAsString();
+                    if(code==200 && respond.contains("OK")){
+
                         System.out.println(respond);
-                        pulsado=false;
+                        game.resetearMakeArrangement();
+                        game.setScreen(BaseScreen.MAIN_MENU_SCREEN);
+                        Gdx.input.setInputProcessor(((MainMenuScreen)game.currentScreen).stage);
+                    }else if(code==200 && !respond.contains("OK")) {
+                        mensajeField.setText(respond);
                     }else {
-                        Gdx.app.exit();
-                        System.out.println("Error code: "+code);
+                        mensajeField.setText("Error code: "+code);
                     }
                 }catch (Exception ex)
                 {
